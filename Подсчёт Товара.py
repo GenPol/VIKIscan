@@ -15,8 +15,23 @@ def tocheck(sums, nums):
     # convert to list data
     SumList = [i for i in sums]
     NumList = [i for i in nums]
-    return SumList
+
+    check_sum = {}
+
+    for i, num in enumerate(NumList):
+        check_sum[num] = check_sum.get(num, 0) + float(SumList[i])
+
+    return check_sum  # {100: 5, 200: 10, 300: 15}
 
 
 
-print(tocheck(beznal, checks))
+
+data = tocheck(beznal, checks)
+
+df = pd.DataFrame.from_dict(data, orient='index')
+
+
+# Экспорт в Excel
+writer = pd.ExcelWriter('output.xlsx', engine='xlsxwriter')
+df.to_excel(writer, sheet_name='Sheet1')
+writer.close()
